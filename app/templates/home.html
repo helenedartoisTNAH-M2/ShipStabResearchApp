@@ -1,0 +1,61 @@
+{% extends "layout.html" %}
+
+{% block body %}
+
+<p>Welcome on the stability application.<br/>This application give access to a search engine (implemented on
+    Elasticsearch technology)
+    on a scientific stability corpus
+    based on two sub corpuses: the STAB and ISSW corpus which respectively exists since 1975 and 1995.</p>
+<h2>Presentation of the corpus</h2>
+<div>
+    <p>Since the beginning of SRDC (Stability Research & Development Committee) efforts was done to work on papers from
+        STAB and ISSW congresses. <br/>
+        Because it seemed that nobody have the complete set of proceedings, the first step was to centralised
+        proceedings of all conferences from
+        the first STAB conference in 1975 and the first ISSW in 1995 both in Glasgow. With helps of all it was possible
+        with reasonable efforts to find a version,
+        at least a paper version for oldest years, of all congress and workshops. </p>
+    <!-- On affiche le nombre de documents présents au moment de la connexion sur le cluster.-->
+    <p>For now, there is a total of {{ response.count }} documents accessible on the search app.</p>
+</div>
+<br/>
+<h2>Simple research</h2>
+<div>
+    <form action="/" method="post" autocomplete="off">
+        <label for="q">Your research: </label><input type="text"
+                                                     placeholder="Enter an expression"
+                                                     name="q"
+                                                     id="q" value="{{q}}" required>
+        <button type="submit" value="search">Search</button>
+    </form>
+    <p class="explanation">This search will grab every document where the first word of your
+        request is followed by the next one and so on.<br/>
+        For instance, the request "Bernoulli's equation" will search all the document where "Bernoulli's" is immediately
+        followed by "equation".<br>
+        The research is made over the entire document, metadata included.</p>
+</div>
+<br/>
+<div>
+    <form action="/fulltext" method="post" autocomplete="off">
+        <label for="query">Your research: </label><input type="text"
+                                                         placeholder="Enter your keyword"
+                                                         name="query"
+                                                         id="query" value="{{query}}" required>
+        <button type="submit" value="search">Search</button>
+    </form>
+    <p style="font-size: 12px; font-style: italic;">This search option will research each word separately on every
+        document of the cluster. It will not search on the metadata of the document. <br/>
+        For instance, the request "Bernoulli's equation" will search "Bernoulli's", then "equation" on each document
+        which will end up with a larger number of results but a smaller relevant score.
+        <br>
+        The research is made over the entire document, metadata included.</p>
+</div>
+<br/>
+<br/>
+<div>
+    <a class="nav-link" href="{{url_for('adv_research')}}">Advanced Research Page</a>
+    <br/><a class="nav-link" href="{{url_for('complex_research')}}">Complex research</a>
+    <br/><a class="nav-link" href="{{url_for('documentation')}}">Documentation</a>
+</div>
+
+{% endblock %}

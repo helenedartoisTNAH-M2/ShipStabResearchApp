@@ -1,0 +1,61 @@
+{% extends "layout.html" %}
+
+{% block body %}
+
+<h2>Bibliographical result page</h2>
+
+<div>
+    <p>This page presents the results for all the bibliographical request made over the stability corpus.</p>
+</div>
+
+<p>The result of your request is:</p>
+
+
+<div>
+    <ol>
+        {% for bibliography_r in response.hits.hits %}
+        <li>{{ bibliography_r._id }} with a score of: {{ bibliography_r._score }}</li>
+        {% endfor %}
+    </ol>
+    <ol>
+        {% for bibliography_r in response.hits.hits %}
+        <li>{{ bibliography_r._source }}</li>
+        {% endfor %}
+    </ol>
+</div>
+
+<div>
+    <ol>
+        {% for author_ref in response.hits.hits %}
+        <li>{{ author_ref._id }} with a score of: {{ author_ref._score }}</li>
+        {% endfor %}
+    </ol>
+    <ol>
+        {% for author_ref in response.hits.hits %}
+        <li>{{ author_ref._source }}</li>
+        {% endfor %}
+    </ol>
+</div>
+
+<div>
+    <ol>
+        {% for date_r in response.hits.hits %}
+        <li>{{ date_r._id }} with a score of: {{ date_r._score }}</li>
+        {% endfor %}
+    </ol>
+    <ol>
+        {% for date_r in response.hits.hits %}
+        <li>{{ date_r._source }}</li>
+        {% endfor %}
+    </ol>
+</div>
+
+
+<br/>
+<div>
+    <br/><a class="nav-link" href="{{url_for('recherche_simple')}}">Home</a>
+    <br/><a class="nav-link" href="{{url_for('adv_research')}}">Advanced Research Page</a>
+    <br/><a class="nav-link" href="{{url_for('documentation')}}">Documentation</a>
+</div>
+
+{% endblock %}

@@ -1,0 +1,37 @@
+{% extends "layout.html" %}
+
+{% block body %}
+
+<table border=" 1" cellspacing="0" cellpadding="0" class="ta1">
+        <colgroup>
+            <col width="50"/>
+            <col width="50"/>
+        </colgroup>
+        <tr class="ro1">
+            <th class="ce5"><p>ID</p></th>
+            <th class="ce5"><p>Score</p></th>
+            <th class="ce5"><p>Keywords</p></th>
+            <th class="ce5"><p>Titre</p></th>
+            <th class="ce5"><p>Auteur</p></th>
+        </tr>
+        {% for resp in response.hits.hits %}
+        <tr class="ro1">
+            <td class="ce6"><p><a
+                    href="{{url_for('static', filename='PDF_STAB_ISSW')}}/{{resp._id}}.pdf" type="application/pdf">{{resp._id}}</a>
+            </p></td>
+            <td class="ce6"><p>{{resp._score}}</p></td>
+            <td class="ce6"><p>{{ metadata[resp._id]['keyword'] }}</p></td>
+            <td class="ce6"><p>{{ metadata[resp._id]['titre'] }}</p></td>
+            <td class="ce6"><p>{{ metadata[resp._id]['auteur'] }}</p></td>
+            {% endfor %}
+        </tr>
+    </table>
+
+<br/>
+<div>
+    <br/><a class="nav-link" href="{{url_for('recherche_simple')}}">Home</a>
+    <br/><a class="nav-link" href="{{url_for('adv_research')}}">Advanced Research Page</a>
+    <br/><a class="nav-link" href="{{url_for('documentation')}}">Documentation</a>
+</div>
+
+{% endblock %}

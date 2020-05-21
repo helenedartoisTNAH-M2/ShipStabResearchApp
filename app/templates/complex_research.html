@@ -1,0 +1,45 @@
+{% extends "layout.html" %}
+
+{% block body %}
+
+<h2>Complex research</h2>
+<p>The complex research page allow you to to a more precise research on the cluster. For instance, you can search for a
+    term and a specific date.
+    This section will also be used to make some analysis over the research.</p>
+
+<div>
+    <form action="/complex_research" method="post" autocomplete="off">
+        <label>Your request :</label><br/><input type="text" name="text" id="text"
+                                                 placeholder="Enter your request here"><br/>
+        <label>Date :</label><br/><input type="text" name="date" id="date" placeholder="Enter a year"><br/>
+        <p style="font-size: 12px; font-style: italic;">If you only want to search for a term and a date, click on the
+            search button after typing your research.<br/>
+            If you want to do a more precise reserach, you can select other options below.</p>
+        <br>
+        <input type="checkbox" name="ref_date" id="ref_date"><label>Date in the reference section</label><br/>
+        <input type="checkbox" name="title" id="title"><label>Main title</label><br/>
+        <input type="checkbox" name="title_ref" id="title_ref"><label>Title in the reference section</label><br/>
+        <input type="checkbox" name="author" id="author"><label>Main author</label><br/>
+        <input type="checkbox" name="author_ref" id="author_ref"><label>Author in the reference section</label><br/>
+        <input type="checkbox" name="orgname" id="orgname"><label>Organization name</label><br/>
+        <input type="checkbox" name="keyword" id="keyword"><label>Keyword part of the document</label><br/>
+        <br/>
+        <br/>
+        <button type="submit" value="search">Search</button>
+    </form>
+    <p style="font-size: 12px; font-style: italic;">The complexe research allow you to do a more precise research on the
+        corpus by researching trough different part of each article. <br/>
+        Here you can search a term or a serie of terms alongside a date. This section needs to have both a query and a
+        date to work. If one the following two text input is not complete, the research page will give you an error
+        message.
+    </p>
+
+</div>
+<br/>
+
+<div>
+    <br/><a class="nav-link" href="{{url_for('recherche_simple')}}">Home</a>
+    <br/><a class="nav-link" href="{{url_for('adv_research')}}">Advanced Research Page</a>
+    <br/><a class="nav-link" href="{{url_for('documentation')}}">Documentation</a>
+</div>
+{% endblock body%}

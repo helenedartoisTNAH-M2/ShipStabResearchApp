@@ -1,0 +1,39 @@
+{% extends "layout.html" %}
+
+{% block body %}
+<div>
+    <form action="/advancedresearch" method="post" autocomplete="off">
+        <label for="q">Keywords: </label><input type="text" placeholder="Enter keywords" name="q" id="q" value="{{q}}"
+                                                required><br />
+        <!--<br/><label for="corpus">Corpus to search in: </label>
+        <select name="corpus" id="corpus">
+            <option value="STAB">STAB</option>
+            <option value="ISSW">ISSW</option>
+        </select>-->
+        <br/>
+        <!--<br/><label for="organization_type">Organization type paper: </label>
+        <select name="organization_type" id="organization_type">
+            <option value="recherche_universitaire">University researches</option>
+            <option value="certification">Certification</option>
+            <option value="industrial">Industrial</option>
+            <option value="etatique">Governmental</option>
+        </select> -->
+        <br/>
+        <br/><label>Tick the metadata you want to search:</label>
+        <br/><input type="checkbox" name="metadata" id="title" value="{{True}}"><label for="title">Title</label>
+        <br/><input type="checkbox" name="metadata" id="author"><label for="author">Author</label>
+        <br/><input type="checkbox" name="metadata" id="organization"><label for="organization">Organization</label>
+        <br/><input type="checkbox" name="metadata" id="keywords"><label for="abstract">Keyword section</label>
+        <br/><input type="checkbox" name="metadata" id="abstract"><label for="abstract">Abstract</label>
+        <br/><input type="checkbox" name="metadata" id="text"><label for="text">Content</label>
+        <br/>
+        <button type="submit" value="search">Search</button>
+    </form>
+</div>
+<br/>
+<div>
+    <a class="nav-link" href="{{url_for('recherche_simple')}}">Return home</a>
+    <br/><a class="nav-link" href="{{url_for('documentation')}}">Documentation</a>
+</div>
+
+{% endblock body%}

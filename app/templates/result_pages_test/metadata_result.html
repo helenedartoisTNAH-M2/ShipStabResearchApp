@@ -1,0 +1,82 @@
+{% extends "layout.html" %}
+
+{% block body %}
+
+<h2>Metadata results page.</h2>
+
+<div>
+    <p>This page presents the results for all the metadata request made over the stability corpus.</p>
+</div>
+
+<p>The results for your research are the following: </p>
+
+
+<div>
+    <ol>
+        {% for title_r in response.hits.hits %}
+        <li>{{ title_r._id }} with a score of: {{ title_r._score }}</li>
+        {% endfor %}
+    </ol>
+    <ol>
+        {% for title_r in response.hits.hits %}
+        <li>{{ title_r._source }}</li>
+        {% endfor %}
+    </ol>
+</div>
+
+
+<div>
+    <ol>
+        {% for author_r in response.hits.hits %}
+        <li>{{ author_r._id }} with a score of: {{ author_r._score }}</li>
+        {% endfor %}
+    </ol>
+    <ol>
+        {% for author_r in response.hits.hits %}
+        <li>{{ author_r._source }}</li>
+        {% endfor %}
+    </ol>
+</div>
+
+<div>
+    <ol>
+        {% for keywords_r in response.hits.hits %}
+        <li>{{ keywords_r._id }} with a score of: {{ keywords_r._score }}</li>
+        {% endfor %}
+    </ol>
+    <ol>{% for keywords_r in response.hits.hits %}
+        <li>{{ keywords_r._source }}</li>
+        {% endfor %}
+    </ol>
+</div>
+
+<div>
+    <ol>
+        {% for id_r in response.hits.hits %}
+        <li>{{ id_r._id }} with a score of: {{ id_r._score }}</li>
+        {% endfor %}
+    </ol>
+    <ol>
+        {% for id_r in response.hits.hits %}
+        <li>{{ id_r._source }}</li>
+        {% endfor %}
+    </ol>
+</div>
+
+<div>
+    <ol>
+        {% for year_r in response.hits.hits %}
+        <li>{{ year_r._id }} with a score of: {{ year_r._score }}</li>
+        {% endfor %}
+    </ol>
+</div>
+
+
+<br/>
+<div>
+    <br/><a class="nav-link" href="{{url_for('recherche_simple')}}">Home</a>
+    <br/><a class="nav-link" href="{{url_for('adv_research')}}">Advanced Research Page</a>
+    <br/><a class="nav-link" href="{{url_for('documentation')}}">Documentation</a>
+</div>
+
+{% endblock %}

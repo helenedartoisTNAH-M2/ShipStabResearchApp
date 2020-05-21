@@ -1,0 +1,33 @@
+{% extends "layout.html" %}
+
+{% block body %}
+
+<h2>Organization result page</h2>
+<div>
+    <p>This page presents the results for all the organization request made over the stability corpus.</p>
+</div>
+
+
+<div>
+    <p>The results for <strong>"{{ q }}"</strong> in the organization name field, are:</p>
+    <ol>
+        {% for organization_r in response.hits.hits %}
+        <li><a href="/home/grobid/Documents/INDEX_v6bis/PDF_STAB+ISSW/{{ organization_r._id }}.pdf"
+               type="application/pdf">{{ organization_r._id }}</a> with a score of: {{ organization_r._score }}
+        </li>
+        {% endfor %}
+    </ol>
+    <ol>
+        {% for organization_r in response.hits.hits %}
+        <li>{{ organization_r._source }}</li>
+        {% endfor %}
+    </ol>
+</div>
+<br/>
+<div>
+    <br/><a class="nav-link" href="{{url_for('recherche_simple')}}">Home</a>
+    <br/><a class="nav-link" href="{{url_for('adv_research')}}">Advanced Research Page</a>
+    <br/><a class="nav-link" href="{{url_for('documentation')}}">Documentation</a>
+</div>
+
+{% endblock %}

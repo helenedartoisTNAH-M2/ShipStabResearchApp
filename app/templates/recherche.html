@@ -1,0 +1,208 @@
+{% extends "layout.html" %}
+
+{% block body %}
+
+<h2>Advance reseach page</h2>
+
+<p>The Elasticsearch search engine allows you to do a very specific research on the metadata of each document.
+    You will find some documentation about advanced research on the <a class="nav-link"
+                                                                       href="{{url_for('documentation')}}">documentation
+        page</a> with some basic exemples.</p>
+<br/>
+
+
+<h2>Research form.</h2>
+<div>
+    <p>This page authorize you to search through multiple informations on each article. For instance, you can search
+        on:</p>
+    <ul>
+        <li>titles</li>
+        <li>authors,</li>
+        <li>keywords</li>
+        <li>organization informations...</li>
+    </ul>
+    <p>There is a little explanation for each research option that indicates what the research will agregate.</p>
+</div>
+
+<h3>Metadata research section</h3>
+<div>
+    <p>The following research will only match results within the metadata part of each article.</p>
+</div>
+<div>
+    <form action="/advancedresearch" method="post" autocomplete="off">
+        <label for="title">Title :</label><br/><input type="text"
+                                                      placeholder="Enter the title"
+                                                      name="title"
+                                                      id="title" value="{{title}}" required>
+        <button type="submit" value="search">Search</button>
+    </form>
+    <p class="explanation">This section will search on the article title only.
+        <br/> You can either search a word in the title or an entire expression.
+        <br/>It won't search on titles in the reference section of the article. For this type of research, please use
+        the
+        bibliographic research section.
+    </p>
+</div>
+<br/>
+<div>
+    <form action="/author_research" method="post" autocomplete="off">
+        <label for="author">Author :</label><br/><input type="text"
+                                                        placeholder="Enter the author name"
+                                                        name="author"
+                                                        id="author" value="{{author}}" required>
+        <button type="submit" value="search">Search</button>
+    </form>
+    <p class="explanation">The best way to find an author's article is by using his surname.
+        <br/>Don't worry about capitalizing the entire name or not, Elasticsearch search engine is not case sensitive.
+        <br/> The author section will search on the article metadata only, it will not search on the reference section
+        of the article.
+        <br/>For this type of research, please use the bibliographic research section.
+    </p>
+</div>
+<br/>
+<div>
+    <form action="/keyword_research" method="post" autocomplete="off">
+        <label for="keywords">Keywords list :</label><br/><input type="text"
+                                                                 placeholder="Enter keywords"
+                                                                 name="keywords"
+                                                                 id="keywords" value="{{keywords}}" required>
+        <button type="submit" value="search">Search</button>
+    </form>
+    <p class="explanation">Be careful, "dead ship" and "dead-ship" won't give the same
+        results.
+        <br/> If you search "dead ship" the search engine will first match articles that have "dead" and "ship" in the
+        metadata (not alwats in that same order). Then it will search for article that have at least one of them. <br>When
+        the
+        score of an article is below 1, it means the document only match for one of the two words in this exemple.</p>
+</div>
+<br/>
+<div>
+    <form action="/id_r" method="post" autocomplete="off">
+        <label for="id">Document by ID :</label><br/><input type="text"
+                                                            placeholder="Enter the ID"
+                                                            name="id"
+                                                            id="id" value="{{id}}" required>
+        <button type="submit" value="search">Search</button>
+    </form>
+    <p class="explanation">This research allows you to find a document by its ID.
+        <br/> The ID fields in Elasticsearch is case sensitive. It should be written like this: "ISSW_1998_s01-p1". </p>
+</div>
+<br/>
+<div>
+    <form action="/year" method="post" autocomplete="off">
+        <label for="year">Document by year :</label><br/><input type="text"
+                                                                placeholder="Enter the year"
+                                                                name="year"
+                                                                id="year" value="{{year}}" required>
+        <button type="submit" value="search">Search</button>
+    </form>
+    <p class="explanation">This research allows you to find all the document from the same
+        year.</p>
+</div>
+
+<h3>Organization researches</h3>
+<div>
+    <p>This section will allow you to research article by organization name and type. The more precise the organization
+        name request is, the more accurate results will be. The country research anly works with country code according
+        to the ISO 3166.</p>
+</div>
+<div>
+    <form action="/orgName" method="post" autocomplete="off">
+        <label for="orgName">Organization name :</label><br/><input type="text"
+                                                                    placeholder="Enter an organization name"
+                                                                    name="orgName"
+                                                                    id="orgName" value="{{orgName}}" required>
+        <button type="submit" value="search">Search</button>
+    </form>
+    <p class="explanation">Try, as much as possible, to give the precise name of the
+        organization you are looking for.
+        <br/>For instance, "university" will give you a much large number of result than "Technical University of
+        Athens".</p>
+</div>
+<br/>
+<div>
+    <form action="/orgType" method="post" autocomplete="off">
+        <label>Organization type :</label><br/>
+        <select name="orgType">
+            <option value="null" disabled="disabled" selected="selected">Organization type</option>
+            <option value="centre_essais">Test center</option>
+            <option value="recherche_universitaire">Research, university</option>
+            <option value="industriel">Industrial</option>
+            <option value="certification">Certification</option>
+            <option value="etatique">State organization</option>
+        </select>
+        <button type="submit" value="search">Search</button>
+    </form>
+    <p class="explanation">This research will match all the document in the cluster that have
+        the selected organization type.</p>
+</div>
+
+<br/>
+<div>
+    <form action="/country" method="post" autocomplete="off">
+        <label for="country">Country :</label><br/><input type="text"
+                                                          placeholder="Enter a country code"
+                                                          name="country"
+                                                          id="country" value="{{country}}" required>
+        <button type="submit" value="search">Search</button>
+    </form>
+    <p class="explanation">The country format use is the country code from the ISO 3166
+        normalization. It can be found on the documentation <a class="nav-link"
+                                                               href="{{url_for('iso_3166')}}">page</a>.</p>
+</div>
+
+<h3>Bibliographic researches</h3>
+<div>
+    <p>All the request on this section only applies to the reference part of each article.
+        This is made to ensure a better bibliographic research on the stability corpus.</p>
+</div>
+<br/>
+<div>
+    <form action="/bibliographyresearch" method="post" autocomplete="off">
+        <label for="bibliography">Title :</label><br/><input type="text"
+                                                             placeholder="Enter the bibliographic research"
+                                                             name="bibliography"
+                                                             id="bibliography" value="{{bibliography}}" required>
+        <button type="submit" value="search">Search</button>
+    </form>
+    <p class="explanation">This section will search on all 'titles' in the bibliographic and
+        reference section of each article.
+    </p>
+</div>
+<br/>
+<div>
+    <form action="/author_ref" method="post" autocomplete="off">
+        <label for="author_ref">Author in the references :</label><br/><input type="text"
+                                                                              placeholder="Enter an author name"
+                                                                              name="author_ref"
+                                                                              id="author_ref" value="{{author_ref}}"
+                                                                              required>
+        <button type="submit" value="search">Search</button>
+    </form>
+    <p class="explanation">This research possibility allows you to search for an author only
+        named in the reference section of the article.
+    </p>
+</div>
+<br/>
+<div>
+    <form action="/date" method="post" autocomplete="off">
+        <label for="date">Date :</label><br/><input type="text"
+                                                    placeholder="Enter a date"
+                                                    name="date"
+                                                    id="date" value="{{date}}" required>
+        <button type="submit" value="search">Search</button>
+    </form>
+    <p class="explanation">The date format use in the article is very simple, it's the year and
+        only the year written with four digits.
+        <br> This research will parse the entire document: the article and its metadata.
+        <br>If you want to retrieve all the documents from the same year, please use the id_date research.</p>
+</div>
+
+<br/>
+<div>
+    <a class="nav-link" href="{{url_for('recherche_simple')}}">Return home</a>
+    <br/><a class="nav-link" href="{{url_for('complex_research')}}">Complex research</a>
+    <br/><a class="nav-link" href="{{url_for('documentation')}}">Documentation</a>
+</div>
+
+{% endblock body%}

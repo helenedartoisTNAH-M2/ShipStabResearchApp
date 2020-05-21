@@ -1,0 +1,57 @@
+{% extends "layout.html" %}
+
+{% block body %}
+
+<h2>Organization result page</h2>
+<div>
+    <p>This page presents the results for all the organization request made over the stability corpus.</p>
+</div>
+
+
+<div>
+    <ol>
+        {% for organization_r in response.hits.hits %}
+        <li>{{ organization_r._id }} with a score of: {{ organization_r._score }}</li>
+        {% endfor %}
+    </ol>
+    <ol>
+        {% for organization_r in response.hits.hits %}
+        <li>{{ organization_r._source }}</li>
+        {% endfor %}
+    </ol>
+</div>
+
+<div>
+    <ol>
+        {% for orgtype in response.hits.hits %}
+        <li>{{ orgtype._id }} with a score of: {{ orgtype._score }}</li>
+        {% endfor %}
+    </ol>
+    <ol>
+        {% for orgtype in response.hits.hits %}
+        <li>{{ orgtype._source }}</li>
+        {% endfor %}
+    </ol>
+</div>
+
+<div>
+    <ol>
+        {% for country_r in response.hits.hits %}
+        <li>{{ country_r._id }} with a score of: {{ country_r._score }}</li>
+        {% endfor %}
+    </ol>
+    <ul>
+        {% for country_r in response.hits.hits %}
+        <li>{{ country_r._source }}</li>
+        {% endfor %}
+    </ul>
+</div>
+
+<br/>
+<div>
+    <br/><a class="nav-link" href="{{url_for('recherche_simple')}}">Home</a>
+    <br/><a class="nav-link" href="{{url_for('adv_research')}}">Advanced Research Page</a>
+    <br/><a class="nav-link" href="{{url_for('documentation')}}">Documentation</a>
+</div>
+
+{% endblock %}

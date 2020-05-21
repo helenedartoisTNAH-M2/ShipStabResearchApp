@@ -1,0 +1,33 @@
+{% extends "layout.html" %}
+
+{% block body %}
+
+<h2>Metadata results page.</h2>
+
+<div>
+    <p>The result presented here were found on the metadata section of each article.</p>
+</div>
+
+
+<div>
+    <p>The results for <strong>"{{ q }}"</strong>, in the main author field of each article, are:</p>
+    <ol>
+        {% for author_r in response.hits.hits %}
+        <li><a href="/home/grobid/Documents/INDEX_v6bis/PDF_STAB+ISSW/{{ author_r._id }}.pdf"
+               type="application/pdf">{{ author_r._id }}</a> with a score of: {{ author_r._score }}</li>
+        {% endfor %}
+    </ol>
+    <ol>
+        {% for author_r in response.hits.hits %}
+        <li>{{ author_r.highlight.texte }}<br/>{{ author_r._source.texte }}</li>
+        {% endfor %}
+    </ol>
+</div>
+<br/>
+<div>
+    <br/><a class="nav-link" href="{{url_for('recherche_simple')}}">Home</a>
+    <br/><a class="nav-link" href="{{url_for('adv_research')}}">Advanced Research Page</a>
+    <br/><a class="nav-link" href="{{url_for('documentation')}}">Documentation</a>
+</div>
+
+{% endblock %}

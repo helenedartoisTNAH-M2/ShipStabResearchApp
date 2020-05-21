@@ -1,0 +1,85 @@
+{% extends "layout.html" %}
+
+{% block body %}
+<h2>Simple results</h2>
+
+<h3>How the results are presented in this page</h3>
+<div>
+    <p>The results are always presented in the same way. First, there is the list of all the document ID that match the
+        request
+        made. All those ID are links to the PDF article. This list also presents the score each document got reagarding
+        to your request (more information about the calculation of the score, can be found <a class="nav-link"
+                                                                                              href="{{url_for('documentation')}}">here</a>).
+        <br/>Then, the document are presented with a highlight section that allow you to verify that the document is
+        accurate regarding to your request.
+    </p>
+</div>
+
+<h3>Results</h3>
+
+<!-- On affiche d'abord le rappelle de la requête utilisateur.-->
+<div>
+    <p>Their are {{ count.count }} results for the expression <strong>"{{ q }}"</strong> are:</p>
+
+    <table border=" 1" cellspacing="0" cellpadding="0" class="ta1">
+        <colgroup>
+            <col width="50"/>
+            <col width="50"/>
+        </colgroup>
+        <tr class="ro1">
+            <th class="ce5"><p>ID</p></th>
+            <th class="ce5"><p>Score</p></th>
+            <th class="ce5"><p>Titre</p></th>
+            <th class="ce5"><p>Auteur</p></th>
+        </tr>
+        {% for resp in response.hits.hits %}
+        <tr class="ro1">
+            <td class="ce6"><p><a
+                    href="{{url_for('static', filename='PDF_STAB_ISSW')}}/{{resp._id}}.pdf" type="application/pdf">{{resp._id}}</a>
+            </p></td>
+            <td class="ce6"><p>{{resp._score}}</p></td>
+            <td class="ce6"><p>{{ metadata[resp._id]['titre'] }}</p></td>
+            <td class="ce6"><p>{{ metadata[resp._id]['auteur'] }}</p></td>
+            {% endfor %}
+        </tr>
+    </table>
+    <p><a href="{{url_for('static', filename='Results')}}/{{ q }}.csv" type="text/csv">Download the result file.</a></p>
+</div>
+
+{% if query %}
+<div>
+    <p>The results for the term(s) <strong>"{{ q }}"</strong> are:</p>
+
+    <table border=" 1" cellspacing="0" cellpadding="0" class="ta1">
+        <colgroup>
+            <col width="50"/>
+            <col width="50"/>
+        </colgroup>
+        <tr class="ro1">
+            <th class="ce5"><p>ID</p></th>
+            <th class="ce5"><p>Score</p></th>
+            <th class="ce5"><p>Titre</p></th>
+            <th class="ce5"><p>Auteur</p></th>
+        </tr>
+        {% for resp in response.hits.hits %}
+        <tr class="ro1">
+            <td class="ce6"><p><a
+                    href="{{url_for('static', filename='PDF_STAB_ISSW')}}/{{resp._id}}.pdf" type="application/pdf">{{resp._id}}</a>
+            </p></td>
+            <td class="ce6"><p>{{resp._score}}</p></td>
+            <td class="ce6"><p>{{ metadata[resp._id]['titre'] }}</p></td>
+            <td class="ce6"><p>{{ metadata[resp._id]['auteur'] }}</p></td>
+            {% endfor %}
+        </tr>
+    </table>
+</div>
+{% endif %}
+
+<br/>
+<div>
+    <br/><a class="nav-link" href="{{url_for('recherche_simple')}}">Home</a>
+    <br/><a class="nav-link" href="{{url_for('adv_research')}}">Advanced Research Page</a>
+    <br/><a class="nav-link" href="{{url_for('documentation')}}">Documentation</a>
+</div>
+
+{% endblock %}

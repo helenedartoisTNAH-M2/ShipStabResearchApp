@@ -1,0 +1,315 @@
+{% extends "layout.html" %}
+
+{% block body %}
+<h1>Documentation about STAB and ISSW corpuses.</h1>
+
+<div>
+    Some documentation is available about the corpuses and the search engine.
+    Here you'll find some examples <a href="">file</a>.
+</div>
+
+<menu>
+    <li><a href="#research_app">The research app</a>, purposes and futur.</li>
+    <li><a href="#simple_r">simple request</a>,</li>
+    <li><a href="#advance_r">advanced request</a>,</li>
+    <li><a href="#complex_r">complex request</a></li>
+    <li><a href="#result_page">The result page</a></li>
+    <li><a href="#country_code">Country code</a> normalization</li>
+</menu>
+<br>
+<h2 id="research_app">The research application.</h2>
+<div>
+    <h3>Basic presentation</h3>
+    <p>The STAB and ISSW research application was made with python 3 during an internship of four months.
+        It is a protype which will be update regularly with new content. The main purpose of this applicaiton is to help
+        the user and researchers to find stability related article easily.
+        One of the main focus of the creation process was to make sure the research engine will be easy to use and
+        quick to give a response. It also have to give access to the original article on a PDF format.
+        The PDF format allows the user to read it on almost every computer plus, it make sure the information and
+        content of the article will still be available in the very same way in the futur.
+        The 'perenisation' of the scientific information and the possibility to access it was a key to the project.
+    </p>
+    <h3>The process to give access to scientifical articles.</h3>
+    <p>The ISSW and STAB corpus collected by SRDC are made of PDF, some of them are quite old which means the OCR is not
+        perfect. As most PDF, they are readable with any PDF viewer but they are not easily modified which is a problem
+        when it comes to make those corpus more usable and searchable for the engineers.
+        For instance, it's nearly impossible to add rich metadata to a PDF file and this can be a challenging point when
+        it comes to give access to technical and scientific informations. A corpus of technical documents is interesting
+        only if we can search precisely on it and structured metadata are key to search and to use effectively any kind
+        of corpus.</p>
+    <p>For older article, a primary step is necessary
+        before using the GROBID API to get the TEI :
+        the article need to be pass on a OCR software.
+        Sometimes, the OCR is quite difficult to
+        produce because of the low quality of the
+        original document (archives can be nearly
+        unreadable or an old printed version of an article
+        can be of low quality which induce many errors
+        during the OCR process). To reduce the number
+        of errors or to increase the effectiveness of the
+        OCR process an simple image treating process
+        can be made. At DGA-Hydrodynamics, M. Paul
+        CREISMEAS use the Omnipage Ultimate
+        software which is not a license free stoftware but
+        it allows us to treat the quality of the image by
+        adjusting the contrast and luminosity, the
+        orientation of the page, selecting the content
+        zone, etc.
+        Those image treatments are essentials to
+        produce a good quality TEI document and to use it
+        effectively without spending hours on
+        corrections over the original document. This all
+        process is just an example of what is possible to
+        do with old article that still have a scientific
+        interest.</p>
+    <p>First and foremost, it was necessary to
+        convert the PDF files into a format that allows
+        us to add metadata and/or to specify the existing
+        metadata.
+        To do so, the GROBID API was used:
+        “GROBID” is a machine learning library for
+        extracting, parsing and re-structuring raw
+        documents such as PDF into structured TEI
+        (<a href="https://www.tei-c.org/">Text Encoding Initiative</a>) -
+        encoded documents. This new format allows
+        us to create more accurate metadata or to
+        increase the already existing metadata. To do
+        so, we use the XML Copy Editor program which
+        is, like GROBID, a license free program. The TEI format foloows
+        a strict list or recommendations that can be found
+        <a href="{{ url_for('static', filename='Guidelines.pdf')}}" type="application/pdf">here</a>.</p>
+    <p>The TEI format is made to structure a
+        document and add some metadata in order to
+        explore a text document in different aspects
+        such as metadata, specific formulas or
+        bibliographic references. But like every markup
+        language it is quite a heavy format to use to
+        exchange data or documents. We choose to
+        convert the new TEI document, once the
+        metadata were added, to another web oriented
+        format called JSON (JavaScript Object Notation).
+        This format preserves all the informations
+        added with XML modifications but it simplifies
+        the document structure and it work as an array
+        in JavaScript. The conversion was made with a
+        python scripts which parsed XML files and
+        convert them into JSON files. All those files
+        contain the necessary metadata to search
+        precisely onto the documents.</p>
+    <p>Once the JSON files are ready we add them
+        to a search engine program. Searching in full-
+        text was one of the main requirement for the
+        application besides the possibility to use
+        structured metadata and to do so, we decide to
+        use Elasticsearch 5 , a JSON document oriented
+        search engine compatible with Python,
+        JavaScript, PHP etc. The JSON documents are
+        indexed into Elasticsearch clusters according to
+        their structure. This way, it will be possible,
+        with a web application, to do full-text search and
+        very specific and precise researches in the
+        corpus such as a research by organization type
+        or by bibliographic reference. The application
+        will be coded to search on multiple fields of
+        metadata in the documents such as authors,
+        institution, date, keywords, abstract, and to
+        search on plain-text, bibliographic references
+        etc. On the frontend, the user deals with a search
+        page and the application will return the PDF file
+        for each response. That way, we made sure that
+        none of the document could be modified or
+        deleted by the user, the application only gave
+        access to the non changeable document, the PDF
+        file.</p>
+</div>
+<br>
+<h2 id="simple_r">Simple research.</h2>
+<div>
+    <p>The simple research, on the home page, offers two main option. The first one is the research by expression or
+        sentenced. This type of research is very specific and must only be used when the user is absolutely sure that
+        the expression or sentence he wrote is in one of the articles, otherwise the research will not return any
+        results. This type of research was added because of some expressions taht are currently used in the naval world
+        such as "Froud number", "Bernoulli's equation", "intact stability" etc. It was also made to ease the user
+        experience regarding to the general use we all have of major search engine like Google or Qwant. <br>
+        The second research option presented on the home page is a term research option. The research will be made on
+        each separated term the user gave. So for a research like "intact stability", the research will first match
+        "intact"
+        and then "stability". This type of research should be done with a few precaution. Some words will indeed be more
+        relevant than other. Every grammatical word like "the" or "an" will produce a great amount of noise in the
+        research engine du to the frequency of their use. Last, if you want to search for a specific term, you may have
+        better result for your research with the keyword search form on the advance research page.
+    </p>
+</div>
+<div>
+    <h2 id="advance_r">Advanced research.</h2>
+    <p>The advanced request page is divided into three main sections in order to help the user in his researches.</p>
+    <h3 id="metadata_r">Research on metadata</h3>
+    <p>It was decided to create a metadata section on the advanced research page to help users get more precise
+        researches. The metadata are the same for each articles presented on the cluster. You can search on main title,
+        authors, keywords, document ID, the date of the document (each document have a metadata date created with the
+        year of the conference where the article was made). Every one of those request are separated, ont his page you
+        can't search for a title and a year for exemple.</p>
+    <p>The title research section allows you to search with expression or sentences on the main title of each articles
+        and not on the titles presented in the reference section of each article. But, on the contrary to the
+        expression research on the home page, this title research will also search for group of word in your sentence.
+        For instance, the research "the Effect of Parametric Rolling" will agregate the entire expression, the following
+        group of words:</p>
+    <ul>
+        <li>the effect,</li>
+        <li>the effect of,</li>
+        <li>effect of parametric rolling,</li>
+        <li>parametric rolling,</li>
+        <li>parametric,</li>
+        <li>rolling.</li>
+    </ul>
+
+    <br>
+    <p>As I have previously mentionned it, the grammatical word like "the" and "of" will increase the score of some
+        result even though they are not relevant words on the research. A better research, in terme of score accuracy
+        will
+        be "effect parametric rolling" because those are the three more important (in term of meaning) words of the
+        request. If you have a very precises title in mind, do not hesitate to write it on the research input.</p>
+    <p>The author research is possible by forename and surname but, usually only the surname is used in the research.
+        This research is made, like the title research, on the main author section for every article. This
+        research is not case sensitive: "Vassalos", "vassalos" and "VASSALOS" will give the exact same result.</p>
+    <p>The keywords research is a term by term type of search engine. For instance, "dead ship" won't give the same
+        results as "dead-ship" or "dead_ship". Plus, if you type "dead ship", the research engine will first look for
+        article that contains "dead" in the keywords section, then article with "ship" and then article that contains
+        "dead" and "ship" but it will not preserve the order of the word nor the principle of matching prefix.
+        An article that match "dead" and "ship" on two separate keywords will give a match event though the user
+        specifically looks for the expression "dead ship". This can be an advantage because the research engine will
+        agregrate a few other article with only one of the term typed in the input and it could be interesting
+        results.</p>
+    <p>The document ID research is possible only if you have the exact ID. If the ID is not complete, it will not get
+        any results. As a little reminder, every article ID follow the same structure: "STAB_year_session-paper" or
+        "ISSW_year_session-paper".</p>
+    <p>The date research works with the year of each article which is the year of the congress where the article was
+        made.</p>
+    <h3>Research on organization</h3>
+    <p>The organization research is made of three main researches the organization name, the organization type and the
+        country linked to the organization. <br>
+        The organization name is an expression research. The more precise the request is the more precise the result
+        will be. "Technical University of Gdansk" will give a much better result than the word "university" on the
+        research.</p>
+    <p>The organization type research is made of the drop down menu with the 5 types of organization we choose:</p>
+    <ul>
+        <li>test center,</li>
+        <li>research and university,</li>
+        <li>industrial,</li>
+        <li>certification,</li>
+        <li>state organization.</li>
+    </ul>
+    <p>This research will agregate every document where the selected organization type is present.</p>
+    <p>The country research is made by country code, a little explanation can be found <a href="#country_code">below</a>.
+    </p>
+    <h3>Bibliographic researches</h3>
+    <p>This research section allow the user to made researches on the reference section of each article. The objective
+        of the research facility is to generate, in a near future, a complete bibliography according to the APA
+        normalization for a given subject.</p>
+    <p>Two types of request are currently available: the title and the author request. The requests follow the same
+        rules given in the metadata request <a href="#metadata_r">section</a> but the request is only made on the
+        reference section of each article.</p>
+</div>
+<br>
+<h2 id="complex_r">The complex research page</h2>
+<div>
+    <p>Unless the rest of the other two research pages, the complex research page allows the user to search on multiple
+        part of each article at the same time. There is only one obligation: the user must write a term and a date at
+        the very least. Once this two informations are typed, the research can be done. If the user have only wrote down
+        those two information, the request will be made (for the term) on the content of the article (it will not search
+        on the metadata of the document) and it will search (as a second option) on the metadata date of an article. The
+        most relevant article will be an article where the term or terms or expression are all found in the body part or
+        the article and the date of the article is also the one chosen by the user. The rest of the result will be
+        document who at least contains the terms.</p>
+    <p>The user can also specify a bit further its request by selecting a few options. The words typed will be search on
+        the full document (the article and the metadata associated) and then on the selected part such as main title,
+        keywords etc. This reseach option need to be done very carefully because every selected option may reduce the
+        potential number of result.</p>
+</div>
+<br>
+<h2 id="result_page">The result pages</h2>
+<div>
+    <h3>Presentation of a standard result page.</h3>
+    <p>The result page is always presented in the same way: a table contains, for each result, the document ID, the
+        score or relevance of the document, its title and author(s). We decided to use a table to render the result
+        because of the simplicity of this form and because it allows to gave very rich details about each document.
+        The table is presented in descending order of relevance.</p>
+    <p>This table will soon be available for download. The download result will be a CSV file of the table. This way
+        the user will be able to keep track of his researches.</p>
+    <h3>The score calculation.</h3>
+    <p>The relevance, or score, is a floating-point number. The higher the score is, the more relevant the document is.
+        The calculation of the score depends on the type of query clause used in the request. The relevance is the
+        algorithm that we use to calculate how similar the contents of a full-text field are to a full-text query
+        string.</p>
+    <p>The most standard algorithm used in Elasticsearch is the frequency / inverse document frequency, also known as
+        TF/IDF. It takes the following factors into account:
+    <ul>
+        <li>the term frequency: how often does a term appear in a field. A field containing occurences of the same term
+            is more likely to be relevant than the field containing one or two mentions only.<br>
+            tf(t in d) = √frequency , the term frequency (tf) for term t in document d is the square root of the number
+            of times the term appears in the document.
+        </li>
+        <br>
+        <li>inverse document frequency: how often does a term appear in the entire index. Terms that appear in many
+            documents have a lower weight than more uncommon terms. For instance: "the" is less relevant than
+            "damping". <br>
+            idf(t) = 1 + log ( numDocs / (docFreq + 1)) , the inverse document frequency (idf) of term t is the
+            logarithm of the number of document in the index, divided byt the number of document that contain the term.
+        </li>
+        <br>
+        <li>field-length norm: a term apppearing in a short title field carries more weight than the very same term in a
+            long content field. <br>
+            norm(d) = 1 / √numTerms , the field lenght norm (norm) is the inverse square root of the number of terms in
+            the field.
+        </li>
+        <br>
+    </ul>
+    Individual queries may combine the TF/IDF score with other factors such as term proximity or term similarities in
+    the case of fuzzy term queries. The relevance can also be applied to True/False clauses.
+    </p>
+    <p>The complex research page use a bool query which implied multiple query clauses to be verified. In that case, the
+        score is calculated for each query clause and they are combined to calculated the final score of the
+        document.</p>
+    <p>In addition, Elasticsearch uses the Boolean Model to find document, the pratical scoring function and vector
+        space model to calculate relevance in addition to the TF/IDF.</p>
+    <p>First, the Boolean model applies AND, OR and NOT conditions in the query. This process allows a query to be
+        faster by excluding document that do not match the query.</p>
+    <p> The vector space model compares a multiterm query against a document. The model represents both
+        document and query as vectors. The vector contains number where each number represents the weight of a term.
+        Then the vectors are compared and the angle between them represents the score of each query term for specific
+        document.</p>
+    <p>When we use a multiterm query in Elasticsearch, the software re-write it as boolean query:
+        the research "parametric roll" is represented in Elasticsearch as:<br>
+        { "query": { "match": { "text" : "parametric roll' } } } <br>
+        But to be understand and calculated by the algorithm, it is rewritten as:
+        { "query": { "bool": { "should": [ {"term": {"text": "parametric"}}, {"term": {"text": "roll"}}, ] }} } }
+        As soon as a document match the query, a score is calculated and then the different scores are combined. The
+        combining formula is the pratical scoring function.ANd it looks like this:
+        score(q, d) = queryNorm(q).coord(q,d).∑(tf(t in d).idf(t)².t.getBoost().norm(t,d))(t in q) <br>
+        score(q, d) is the relevance score of document d for query q, queryNorm(q) is the query normalization factor,
+        coord(q,d) is the coordination factor, the sum of the weights for eachterm t in the query q for document d, tf(t
+        in d) is the term frequency for t in d, idf(t) is the inverse document frequency for t, t.getBoost() is the
+        boost that has been applied to the query, norm(t,d) is the field-length norm.
+    </p>
+
+</div>
+
+<div>
+    <h2 id="country_code">Country code</h2>
+    <p> In order to make the research app easier to search, it was decided to keep the country research in english and
+        to
+        avoid any mistakes about the spelling of country name, we use the ISO 3166 normalization for country code.
+        If the user try to search a country name on the organization section it will not give a result unless the
+        country
+        code is used.
+        <br/>The entire table can be found <a class="nav-link" href="{{url_for('iso_3166')}}">here</a>.</p>
+</div>
+
+
+<div>
+    <br/><a class="nav-link" href="{{url_for('recherche_simple')}}">Home</a>
+    <br/><a class="nav-link" href="{{url_for('adv_research')}}">Advanced Research Page</a>
+    <br/><a class="nav-link" href="{{url_for('complex_research')}}">Complex research</a>
+</div>
+
+{% endblock body%}

@@ -16,7 +16,7 @@ asn1crypto==0.24.0
 attrs==19.3.0
 backcall==0.1.0
 beautifulsoup4==4.7.1
-bleach==3.0.2
+bleach==3.3.0
 blinker==1.4
 bs4==0.0.1
 certifi==2018.10.15
